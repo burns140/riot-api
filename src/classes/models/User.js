@@ -1,5 +1,3 @@
-
-
 class User {
     _accessToken;
     _entitlementToken;
