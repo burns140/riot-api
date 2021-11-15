@@ -34,8 +34,7 @@ class AuthenticationHandler {
         const response = await axiosInstance.put(AUTH_URL, data);
         const pattern = /access_token=((?:[a-zA-Z]|\d|\.|-|_)*).*id_token=((?:[a-zA-Z]|\d|\.|-|_)*).*expires_in=(\d*)/;
         const strToMatch = response.data.response.parameters.uri;
-        const matchArr = strToMatch.match(pattern);
-        const accessId = matchArr[1];
+        const accessId = strToMatch.match(pattern)[1];
     
         return accessId;
     }
@@ -64,6 +63,8 @@ class AuthenticationHandler {
         headers["X-Riot-Entitlements-JWT"] = entitlementsToken;
         
         const userId = await this.getUserId();
+
+        return { accessToken, entitlementsToken, userId };
     }
 }
 
