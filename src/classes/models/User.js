@@ -1,24 +1,28 @@
+const AuthenticationHandler = require("../static/AuthenticationHandler");
+
 class User {
     _accessToken;
-    _entitlementToken;
+    _entitlementsToken;
     _userId;
 
-    constructor() {
-        const { accessToken, entitlementToken, userId } = AuthenticationHandler.run();
+    constructor() {}
+
+    async init() {
+        const { accessToken, entitlementsToken, userId } = await AuthenticationHandler.getCredentials();
         this._accessToken = accessToken;
-        this._entitlementToken = entitlementToken;
+        this._entitlementsToken = entitlementsToken;
         this._userId = userId;
     }
 
-    static get AccessToken() {
+    get AccessToken() {
         return this._accessToken;
     }
 
-    static get EntitlementToken() {
-        return this._entitlementToken;
+    get EntitlementsToken() {
+        return this._entitlementsToken;
     }
 
-    static get UserId() {
+    get UserId() {
         return this._userId;
     }
 }
