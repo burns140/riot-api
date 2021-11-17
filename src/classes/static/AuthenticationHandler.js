@@ -37,7 +37,7 @@ module.exports = class AuthenticationHandler {
     }
 
     static async getEntitlementsToken() {
-        const response = await AxiosWrapper.post(URLS.ENTITLEMENTS, {});
+        const response = await AxiosWrapper.post(URLS.ENTITLEMENTS_TOKEN, {});
         const entitlementsToken = response.data["entitlements_token"]
     
         return entitlementsToken;
