@@ -1,4 +1,4 @@
-const AuthenticationHandler = require("../static/AuthenticationHandler");
+const AuthenticationHandler = require("./AuthenticationHandler");
 
 class User {
     _accessToken;
