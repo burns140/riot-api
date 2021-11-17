@@ -1,6 +1,5 @@
 const { URLS, GUN_ID_TO_NAME_MAP, GUN_NAMES } = require("../../common/Constants");
 const AxiosWrapper = require("../AxiosWrapper");
-const { MySkinMap } = require("../static/EntitlementsManager");
 const EntitlementsManager = require("../static/EntitlementsManager");
 const User = require("./User");
 
@@ -17,7 +16,7 @@ class LoadoutManager {
         const levelMap = EntitlementsManager.MySkinLevelMap;
         const chromaMap = EntitlementsManager.MyChromaMap;
 
-        for (let gun of guns) {
+        for (const gun of guns) {
             gun.Name = GUN_ID_TO_NAME_MAP[gun.ID.toUpperCase()];
             gun.SkinName = skinMap.get(gun.SkinID.toUpperCase());
             gun.LevelName = levelMap.get(gun.SkinLevelID.toUpperCase());
@@ -25,16 +24,12 @@ class LoadoutManager {
         }
 
         this._equippedGuns = guns;
+        // console.log(this._equippedGuns);
 
         this._skinToGunMap = new Map();
         this.buildSkinToGunMap(skinMap);
         this.buildLevelToSkinMap(levelMap);
         this.buildChromaToLevelMap(chromaMap, skinMap);
-
-        this._skinToGunMap.forEach((value, key) => {
-            console.log(key);
-            console.log(value);
-        })
     }
 
     buildSkinToGunMap(skinMap) {
@@ -51,7 +46,7 @@ class LoadoutManager {
                 }
             }
 
-            this._skinToGunMap.get(key || "Melee").set(value, [[], []]);
+            this._skinToGunMap.get(key || "Melee").set(value, { levels: [], variants: [] });
         });
     }
 
@@ -60,7 +55,7 @@ class LoadoutManager {
             levelMap.forEach(levelMapValue => {
                 value.forEach((innerValue, key) => {
                     if (levelMapValue.includes(key)) {
-                        innerValue[0].push(levelMapValue);
+                        innerValue.levels.push(levelMapValue);
                         return;
                     }
                 });
@@ -86,8 +81,8 @@ class LoadoutManager {
 
         this._skinToGunMap.forEach((skinsForEachGunMap, key) => {
             skinsForEachGunMap.forEach((innerValue, innerKey) => {
-                innerValue[1] = tempMap.get(innerKey);
-            })
+                innerValue.variants = tempMap.get(innerKey);
+            });
         });
     }
 }
