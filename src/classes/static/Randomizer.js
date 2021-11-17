@@ -19,7 +19,7 @@ module.exports = class Randomizer {
 
         console.log(randomized);
         const randomWithIdMap = new Map();
-        const skinMap = EntitlementsManager.MySkinMap;
+        const skinMap = EntitlementsManager.MySkinIdMap;
         randomized.forEach((skinName, gunName) => {
             let skinId;
 

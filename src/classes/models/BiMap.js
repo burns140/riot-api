@@ -13,6 +13,10 @@ module.exports = class BiMap {
         return this.map.get(key);
     }
 
+    forEach(callback) {
+        this.map.forEach(callback);
+    }
+
     getFromValue(value) {
         return this.reverseMap.get(value);
     }

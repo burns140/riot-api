@@ -3,15 +3,16 @@ const URLS = require("../../common/Constants").URLS;
 const ITEM_TYPE_IDS = require("../../common/Constants").ITEM_TYPE_IDS;
 const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
 const User = require("./User");
+const BiMap = require("../models/BiMap");
 
 class EntitlementsManager {
     _mySkinLevels;
     _myChromas;
     _mySkins;
 
-    _mySkinMap;
-    _mySkinLevelMap;
-    _myChromaMap;
+    _mySkinIdMap;
+    _mySkinLevelIdMap;
+    _myChromaIdMap;
 
     constructor() {}
 
@@ -32,22 +33,22 @@ class EntitlementsManager {
         const myChromaIds = allEntitlements.filter(x => x.ItemTypeID === ITEM_TYPE_IDS.SKIN_VARIANTS)[0].Entitlements.map(variant => variant.ItemID);
         
         this._mySkinLevels = allSkinLevels.filter(skinLevel => mySkinIds.includes(skinLevel.id.toLowerCase()));
-        this._mySkinLevelMap = new Map();
+        this._mySkinLevelIdMap = new BiMap();
         for (const level of this._mySkinLevels) {
-            this._mySkinLevelMap.set(level.id, level.name);
+            this._mySkinLevelIdMap.set(level.id, level.name);
         }
         
         this._myChromas = allSkinChromas.filter(chroma => myChromaIds.includes(chroma.id.toLowerCase()));
-        this._myChromaMap = new Map();
+        this._myChromaIdMap = new BiMap();
         for (const chroma of this._myChromas) {
-            this._myChromaMap.set(chroma.id, chroma.name);
+            this._myChromaIdMap.set(chroma.id, chroma.name);
         }
 
         const mySkinNames = this._mySkinLevels.map(skin => skin.name);
         this._mySkins = allSkins.filter(skin => mySkinNames.includes(skin.name));
-        this._mySkinMap = new Map();
+        this._mySkinIdMap = new BiMap();
         for (const skin of this._mySkins) {
-            this._mySkinMap.set(skin.id, skin.name);
+            this._mySkinIdMap.set(skin.id, skin.name);
         }
     }
 
@@ -90,16 +91,16 @@ class EntitlementsManager {
         return this._myChromas;
     }
 
-    get MySkinMap() {
-        return this._mySkinMap;
+    get MySkinIdMap() {
+        return this._mySkinIdMap;
     }
 
-    get MySkinLevelMap() {
-        return this._mySkinLevelMap;
+    get MySkinLevelIdMap() {
+        return this._mySkinLevelIdMap;
     }
 
-    get MyChromaMap() {
-        return this._myChromaMap;
+    get MyChromaIdMap() {
+        return this._myChromaIdMap;
     }
 }
 

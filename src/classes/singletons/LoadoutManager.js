@@ -12,9 +12,9 @@ class LoadoutManager {
     async init() {
         const loadout = (await AxiosWrapper.get(URLS.GET_LOADOUT.replace("puuid", User.UserId))).data;
         const guns = loadout.Guns;
-        const skinMap = EntitlementsManager.MySkinMap;
-        const levelMap = EntitlementsManager.MySkinLevelMap;
-        const chromaMap = EntitlementsManager.MyChromaMap;
+        const skinMap = EntitlementsManager.MySkinIdMap;
+        const levelMap = EntitlementsManager.MySkinLevelIdMap;
+        const chromaMap = EntitlementsManager.MyChromaIdMap;
 
         for (const gun of guns) {
             gun.Name = GUN_ID_TO_NAME_MAP[gun.ID.toUpperCase()];
