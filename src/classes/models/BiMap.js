@@ -1,23 +1,35 @@
 module.exports = class BiMap {
-    map = new Map();
-    reverseMap = new Map();
+    _map = new Map();
+    _reverseMap = new Map();
 
     constructor() {}
 
     set(key, value) {
-        this.map.set(key, value);
-        this.reverseMap.set(value, key);
+        this._map.set(key, value);
+        this._reverseMap.set(value, key);
     }
 
     get(key) {
-        return this.map.get(key);
+        return this._map.get(key);
     }
 
     forEach(callback) {
-        this.map.forEach(callback);
+        this._map.forEach(callback);
     }
 
     getFromValue(value) {
-        return this.reverseMap.get(value);
+        return this._reverseMap.get(value);
+    }
+
+    keys() {
+        return this._map.keys();
+    }
+
+    get Map() {
+        return this._map;
+    }
+
+    get ReverseMap() {
+        return this._reverseMap;
     }
 }

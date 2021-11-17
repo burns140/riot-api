@@ -50,6 +50,15 @@ class EntitlementsManager {
         for (const skin of this._mySkins) {
             this._mySkinIdMap.set(skin.id, skin.name);
         }
+
+        const skinNamesNoLevels = mySkinNames.filter(name => !name.includes("Level"));
+
+        for (const name of skinNamesNoLevels) {
+            const found = allSkinChromas.find(chroma => chroma.name === name);
+            if (found) {
+                this._myChromaIdMap.set(found.id, found.name);
+            }
+        }
     }
 
     mapAllSkins(allContent) {

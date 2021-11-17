@@ -1,4 +1,4 @@
-const { GUN_IDS } = require("../../common/Constants");
+const { GUN_IDS, GUN_NAMES, STANDARD_CHROMAS } = require("../../common/Constants");
 const EntitlementsManager = require("../singletons/EntitlementsManager");
 const LoadoutManager = require("../singletons/LoadoutManager")
 
@@ -17,20 +17,45 @@ module.exports = class Randomizer {
             randomized.set(key, randomSkinName);
         });
 
-        console.log(randomized);
         const randomWithIdMap = new Map();
         const skinMap = EntitlementsManager.MySkinIdMap;
+        const levelMap = EntitlementsManager.MySkinLevelIdMap;
+        const chromaMap = EntitlementsManager.MyChromaIdMap;
+        const skinToGunMap = LoadoutManager.SkinToGunMap;
+        // console.log(randomized);
         randomized.forEach((skinName, gunName) => {
-            let skinId;
+            const obj = {};
+            randomWithIdMap.set(GUN_IDS[gunName.toUpperCase()], obj);
 
-            skinMap.forEach((innerSkinName, innerSkinId) => {
-                if (skinName === innerSkinName) {
-                    skinId = innerSkinId;
-                    return;
+            const skinId = skinMap.getFromValue(skinName);
+            obj.skinId = skinId;
+            obj.skinName = skinName;
+
+            const availableLevels = skinToGunMap.get(gunName).get(skinName).levels;
+            const maxLevel = availableLevels[availableLevels.length - 1];
+            const maxLevelId = levelMap.getFromValue(maxLevel);
+            obj.levelId = maxLevelId;
+            obj.levelName = maxLevel;
+
+            const availableVariants = skinToGunMap.get(gunName).get(skinName).variants;
+            if (availableVariants.length > 0) {
+                const randomIndex = Math.floor(Math.random() * availableVariants.length);
+                const randomVariantName = availableVariants[randomIndex];
+                const randomVariantId = chromaMap.getFromValue(randomVariantName);
+                obj.chromaId = randomVariantId;
+                obj.chromaName = randomVariantName;
+            } else {
+                console.log(`undefined: ${skinName}`);
+                obj.chromaId = undefined;
+                obj.chromaName = skinName;
+            }
+
+            if (obj.chromaId === undefined) {
+                if (gunName !== GUN_NAMES.OPERATOR) {
+                    const gunId = GUN_IDS[gunName.toUpperCase()];
+                    obj.chromaId = STANDARD_CHROMAS[gunId];
                 }
-            });
-
-            randomWithIdMap.set(GUN_IDS[gunName.toUpperCase()], skinId);
+            }
         });
 
         console.log(randomWithIdMap);
