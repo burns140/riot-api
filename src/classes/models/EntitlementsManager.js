@@ -2,7 +2,7 @@ const AxiosWrapper = require("../AxiosWrapper")
 const URLS = require("../../common/Constants").URLS;
 const ITEM_TYPE_IDS = require("../../common/Constants").ITEM_TYPE_IDS;
 const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
-const User = require("../models/User");
+const User = require("./User");
 
 class EntitlementsManager {
     _mySkinLevels;

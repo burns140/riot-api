@@ -96,6 +96,10 @@ const GUN_ID_TO_NAME_MAP = {
     [GUN_IDS.MELEE]: GUN_NAMES.MELEE
 }
 
+const GUN_NAME_TO_ID_MAP = {
+    
+}
+
 module.exports.URLS = URLS;
 module.exports.CLIENT_VALUES = CLIENT_VALUES;
 module.exports.HEADER_FIELDS = HEADER_FIELDS;

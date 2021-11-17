@@ -1,6 +1,6 @@
 const { URLS, GUN_ID_TO_NAME_MAP, GUN_NAMES } = require("../../common/Constants");
 const AxiosWrapper = require("../AxiosWrapper");
-const EntitlementsManager = require("../static/EntitlementsManager");
+const EntitlementsManager = require("./EntitlementsManager");
 const User = require("./User");
 
 class LoadoutManager {
@@ -84,6 +84,14 @@ class LoadoutManager {
                 innerValue.variants = tempMap.get(innerKey);
             });
         });
+    }
+
+    get EquippedGuns() {
+        return this._equippedGuns;
+    }
+
+    get SkinToGunMap() {
+        return this._skinToGunMap;
     }
 }
 
