@@ -1,5 +1,5 @@
 const { URLS, GUN_ID_TO_NAME_MAP, GUN_NAMES } = require("../../common/Constants");
-const AxiosWrapper = require("../AxiosWrapper");
+const AxiosWrapper = require("./AxiosWrapper");
 const EntitlementsManager = require("./EntitlementsManager");
 const User = require("./User");
 

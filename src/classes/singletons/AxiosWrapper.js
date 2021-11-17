@@ -1,6 +1,6 @@
 const axios = require("axios");
-const CLIENT_VALUES = require("../common/Constants").CLIENT_VALUES;
-const HEADER_FIELDS = require("../common/Constants").HEADER_FIELDS;
+const CLIENT_VALUES = require("../../common/Constants").CLIENT_VALUES;
+const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
 
 class AxiosWrapper {
     axiosInstance;

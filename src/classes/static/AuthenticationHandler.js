@@ -1,4 +1,4 @@
-const AxiosWrapper = require("../AxiosWrapper");
+const AxiosWrapper = require("../singletons/AxiosWrapper");
 const URLS = require("../../common/Constants").URLS;
 const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
 const USERNAME = "aphantomdolphin";

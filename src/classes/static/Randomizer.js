@@ -1,6 +1,6 @@
 const { GUN_IDS } = require("../../common/Constants");
-const EntitlementsManager = require("../models/EntitlementsManager");
-const LoadoutManager = require("../models/LoadoutManager")
+const EntitlementsManager = require("../singletons/EntitlementsManager");
+const LoadoutManager = require("../singletons/LoadoutManager")
 
 module.exports = class Randomizer {
     static randomizeLoadout() {

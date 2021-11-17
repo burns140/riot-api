@@ -1,6 +1,6 @@
-const LoadoutManager = require("./classes/models/LoadoutManager");
-const User = require("./classes/models/User");
-const EntitlementsManager = require("./classes/models/EntitlementsManager");
+const LoadoutManager = require("./classes/singletons/LoadoutManager");
+const User = require("./classes/singletons/User");
+const EntitlementsManager = require("./classes/singletons/EntitlementsManager");
 const Randomizer = require("./classes/static/Randomizer");
 
 async function start() {
