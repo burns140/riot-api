@@ -1,8 +1,9 @@
 const AxiosWrapper = require("../singletons/AxiosWrapper");
 const URLS = require("../../common/Constants").URLS;
 const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
-const USERNAME = "aphantomdolphin";
-const PASSWORD = "c7eEF9!m$4demPcY";
+const AUTH = require("../../resources/auth.json");
+const USERNAME = AUTH.USERNAME || "YOUR_USERNAME_HERE";
+const PASSWORD = AUTH.PASSWORD || "YOUR_PASSWORD_HERE";
 
 
 module.exports = class AuthenticationHandler {

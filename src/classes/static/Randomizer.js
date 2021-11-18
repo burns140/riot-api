@@ -82,7 +82,7 @@ module.exports = class Randomizer {
             Identity: LoadoutManager.Identity
         };
 
-        const res = (await AxiosWrapper.put(URLS.LOADOUT.replace("puuid", User.UserId), data));
+        // const res = (await AxiosWrapper.put(URLS.LOADOUT.replace("puuid", User.UserId), data));
     }
 
     static buildGunArray(guns, randomizedMap) {
