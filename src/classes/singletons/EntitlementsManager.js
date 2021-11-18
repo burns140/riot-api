@@ -5,54 +5,110 @@ const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
 const User = require("./User");
 const BiMap = require("../models/BiMap");
 
+/**
+ * @classdesc Track the users entitlements
+ */
 class EntitlementsManager {
-    _mySkinLevels;
-    _myChromas;
-    _mySkins;
-
     _mySkinIdMap;
     _mySkinLevelIdMap;
     _myChromaIdMap;
 
     constructor() {}
 
+    /**
+     * @description Initialize mapping for skins, skin levels, and chromas
+     */
     async init() {
+        const allContent = await this.getAllContent();
+        const { allSkins, allSkinLevels, allSkinChromas } = this.breakAllContentIntoCategories(allContent);
+        
+        const allEntitlements = (await AxiosWrapper.get(URLS.GET_ENTITLEMENTS.replace("puuid", User.UserId))).data.EntitlementsByTypes;
+        const mySkinIds = allEntitlements.filter(x => x.ItemTypeID === ITEM_TYPE_IDS.SKINS)[0].Entitlements.map(skin => skin.ItemID);
+        const myChromaIds = allEntitlements.filter(x => x.ItemTypeID === ITEM_TYPE_IDS.SKIN_VARIANTS)[0].Entitlements.map(variant => variant.ItemID);
+        const mySkinLevels = allSkinLevels.filter(skinLevel => mySkinIds.includes(skinLevel.id.toLowerCase()));
+        const mySkinNames = mySkinLevels.map(skin => skin.name);
+
+        this.createSkinLevelIdMap(mySkinLevels);
+        this.createChromaIdMap(allSkinChromas, myChromaIds);
+        this.createSkinIdMap(mySkinNames, allSkins);
+
+        this.applyChromaIdForGunsWithNoVariants(allSkinChromas, mySkinNames);
+    }
+
+    /**
+     * @description Get all valorant game content from Riot's api
+     * @returns {object}
+     */
+    async getAllContent() {
         const config = {
             headers: {
                 [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-0b69981a-08f6-4f87-ae43-e96b00ae51fd"
             }
         }
-        const allContent = (await AxiosWrapper.get(URLS.ALL_CONTENT, config)).data;
 
+        return (await AxiosWrapper.get(URLS.ALL_CONTENT, config)).data;
+    }
+
+    /**
+     * @description Break all of the content down to separate skins, skin levels, and chromas
+     * @param {object} allContent 
+     * @returns {Array, Array, Array}
+     */
+    breakAllContentIntoCategories(allContent) {
         const allSkins = this.mapAllSkins(allContent);
         const allSkinLevels = this.mapAllSkinLevels(allContent);
         const allSkinChromas = this.mapAllSkinChromas(allContent);
 
-        const allEntitlements = (await AxiosWrapper.get(URLS.GET_ENTITLEMENTS.replace("puuid", User.UserId))).data.EntitlementsByTypes;
-        const mySkinIds = allEntitlements.filter(x => x.ItemTypeID === ITEM_TYPE_IDS.SKINS)[0].Entitlements.map(skin => skin.ItemID);
-        const myChromaIds = allEntitlements.filter(x => x.ItemTypeID === ITEM_TYPE_IDS.SKIN_VARIANTS)[0].Entitlements.map(variant => variant.ItemID);
-        
-        this._mySkinLevels = allSkinLevels.filter(skinLevel => mySkinIds.includes(skinLevel.id.toLowerCase()));
-        this._mySkinLevelIdMap = new BiMap();
-        for (const level of this._mySkinLevels) {
-            this._mySkinLevelIdMap.set(level.id, level.name);
-        }
-        
-        this._myChromas = allSkinChromas.filter(chroma => myChromaIds.includes(chroma.id.toLowerCase()));
-        this._myChromaIdMap = new BiMap();
-        for (const chroma of this._myChromas) {
-            this._myChromaIdMap.set(chroma.id, chroma.name);
-        }
+        return { allSkins, allSkinLevels, allSkinChromas };
+    }
 
-        const mySkinNames = this._mySkinLevels.map(skin => skin.name);
-        this._mySkins = allSkins.filter(skin => mySkinNames.includes(skin.name));
+    /**
+     * @description Create the id-name map for skins that I own
+     * @param {Array<string>} mySkinNames Names of all the skins I own
+     * @param {object} allSkins All skins in the game
+     */
+    createSkinIdMap(mySkinNames, allSkins) {
+        const mySkins = allSkins.filter(skin => mySkinNames.includes(skin.name));
         this._mySkinIdMap = new BiMap();
-        for (const skin of this._mySkins) {
+        for (const skin of mySkins) {
             this._mySkinIdMap.set(skin.id, skin.name);
         }
+    }
 
+    /**
+     * @description Create the id-name map for skin levels that I own
+     * @param {Array<string>} mySkinLevels The skin levels that I own
+     */
+    createSkinLevelIdMap(mySkinLevels) {
+        this._mySkinLevelIdMap = new BiMap();
+        for (const level of mySkinLevels) {
+            this._mySkinLevelIdMap.set(level.id, level.name);
+        }
+    }
+
+    /**
+     * @description Create the id-name map for chromas that I own
+     * @param {object} allSkinChromas All chromas in the game
+     * @param {Array} myChromaIds Id's of the chromas that I own
+     */
+    createChromaIdMap(allSkinChromas, myChromaIds) {
+        const myChromas = allSkinChromas.filter(chroma => myChromaIds.includes(chroma.id.toLowerCase()));
+        this._myChromaIdMap = new BiMap();
+        for (const chroma of myChromas) {
+            this._myChromaIdMap.set(chroma.id, chroma.name);
+        }
+    }
+
+    /**
+     * @description Get the chrroma ids for guns that don't have variants.
+     * The entitlement chromas only returns actual variants
+     * For guns with no variants, the chroma name is simply the gun's skin name, but those don't get returned with entitlements
+     * Here, we apply that chroma name and id
+     * @param {object} allSkinChromas All chromas in the game
+     * @param {Array<string>} mySkinNames Names of all the skins I own
+     */
+    applyChromaIdForGunsWithNoVariants(allSkinChromas, mySkinNames) {
         const skinNamesNoLevels = mySkinNames.filter(name => !name.includes("Level"));
-
         for (const name of skinNamesNoLevels) {
             const found = allSkinChromas.find(chroma => chroma.name === name);
             if (found) {
@@ -61,6 +117,11 @@ class EntitlementsManager {
         }
     }
 
+    /**
+     * @description Map each skin to only its name and id
+     * @param {object} allContent 
+     * @returns {Array}
+     */
     mapAllSkins(allContent) {
         return allContent.skins.map(skin => {
             return {
@@ -70,6 +131,11 @@ class EntitlementsManager {
         });
     }
 
+    /**
+     * @description Map each skin level to only its name and id
+     * @param {object} allContent 
+     * @returns {Array}
+     */
     mapAllSkinLevels(allContent) {
         return allContent.skinLevels.map(skin => {
             return {
@@ -79,6 +145,11 @@ class EntitlementsManager {
         });
     }
 
+    /**
+     * @description Map each chroma to only its name and id
+     * @param {object} allContent 
+     * @returns {Array}
+     */
     mapAllSkinChromas(allContent) {
         return allContent.chromas.map(chroma => {
             return {
@@ -88,18 +159,9 @@ class EntitlementsManager {
         });
     }
 
-    get MySkins() {
-        return this._mySkins;
-    }
-
-    get MySkinLevels() {
-        return this._mySkinLevels;
-    }
-
-    get MyChromas() {
-        return this._myChromas;
-    }
-
+    /**
+     * Getters Below
+     */
     get MySkinIdMap() {
         return this._mySkinIdMap;
     }
