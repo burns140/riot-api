@@ -7,7 +7,7 @@ async function start() {
     await User.init();
     await EntitlementsManager.init();
     await LoadoutManager.init();
-    Randomizer.randomizeSkins();
+    Randomizer.randomizeAllSkins();
 }
 
 start();
