@@ -1,10 +1,11 @@
-const { GUN_IDS, GUN_NAMES, STANDARD_CHROMAS } = require("../../common/Constants");
+const { GUN_IDS, GUN_NAMES, STANDARD_CHROMAS, URLS } = require("../../common/Constants");
+const AxiosWrapper = require("../singletons/AxiosWrapper");
 const EntitlementsManager = require("../singletons/EntitlementsManager");
-const LoadoutManager = require("../singletons/LoadoutManager")
+const LoadoutManager = require("../singletons/LoadoutManager");
+const User = require("../singletons/User");
 
 module.exports = class Randomizer {
-    static randomizeLoadout() {
-        const equippedGuns = LoadoutManager.EquippedGuns;
+    static randomizeSkins() {
         const map = LoadoutManager.SkinToGunMap;
 
         const randomized = new Map();
@@ -28,6 +29,8 @@ module.exports = class Randomizer {
             randomWithIdMap.set(GUN_IDS[gunName.toUpperCase()], obj);
 
             const skinId = skinMap.getFromValue(skinName);
+            obj.gunId = GUN_IDS[gunName.toUpperCase()];
+            obj.gunName = gunName;
             obj.skinId = skinId;
             obj.skinName = skinName;
 
@@ -45,7 +48,7 @@ module.exports = class Randomizer {
                 obj.chromaId = randomVariantId;
                 obj.chromaName = randomVariantName;
             } else {
-                console.log(`undefined: ${skinName}`);
+                // console.log(`undefined: ${skinName}`);
                 obj.chromaId = undefined;
                 obj.chromaName = skinName;
             }
@@ -54,10 +57,54 @@ module.exports = class Randomizer {
                 if (gunName !== GUN_NAMES.OPERATOR) {
                     const gunId = GUN_IDS[gunName.toUpperCase()];
                     obj.chromaId = STANDARD_CHROMAS[gunId];
+                } else {
+                    if (obj.chromaName === "Nitro Operator") {
+                        obj.chromaId = STANDARD_CHROMAS["NITRO_OPERATOR"];
+                    } else {
+                        obj.chromaId = STANDARD_CHROMAS["GENESIS_OPERATOR"];
+                    }
                 }
             }
         });
 
-        console.log(randomWithIdMap);
+        // console.log(randomWithIdMap);
+        this.sendRequest(randomWithIdMap);
+    }
+
+    static async sendRequest(randomizedMap) {
+        const guns = [];
+
+        this.buildGunArray(guns, randomizedMap);
+        
+        const data = {
+            Guns: guns,
+            Sprays: LoadoutManager.Sprays,
+            Identity: LoadoutManager.Identity
+        };
+
+        const res = (await AxiosWrapper.put(URLS.LOADOUT.replace("puuid", User.UserId), data));
+    }
+
+    static buildGunArray(guns, randomizedMap) {
+        randomizedMap.forEach((skinInfo, gunId) => {
+            const thisGun = {
+                ID: gunId,
+                SkinID: skinInfo.skinId,
+                SkinLevelID: skinInfo.levelId,
+                ChromaID: skinInfo.chromaId,
+                Attachments: []
+            };
+
+            guns.push(thisGun);
+        });
+
+        for (const gun of LoadoutManager.EquippedGuns) {
+            if (gun.hasOwnProperty("CharmInstanceID")) {
+                const gunForReq = guns.find(x => x.ID.toLowerCase() === gun.ID.toLowerCase());
+                gunForReq.CharmInstanceID = gun.CharmInstanceID;
+                gunForReq.CharmID = gun.CharmID;
+                gunForReq.CharmLevelID = gun.CharmLevelID;
+            }
+        }
     }
 }

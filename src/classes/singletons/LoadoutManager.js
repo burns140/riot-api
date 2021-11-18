@@ -5,12 +5,15 @@ const User = require("./User");
 
 class LoadoutManager {
     _equippedGuns;
+    _equippedSprays;
+    _identity;
+    _incognito;
     _skinToGunMap;
 
     constructor() {}
 
     async init() {
-        const loadout = (await AxiosWrapper.get(URLS.GET_LOADOUT.replace("puuid", User.UserId))).data;
+        const loadout = (await AxiosWrapper.get(URLS.LOADOUT.replace("puuid", User.UserId))).data;
         const guns = loadout.Guns;
         const skinMap = EntitlementsManager.MySkinIdMap;
         const levelMap = EntitlementsManager.MySkinLevelIdMap;
@@ -20,11 +23,13 @@ class LoadoutManager {
             gun.Name = GUN_ID_TO_NAME_MAP[gun.ID.toUpperCase()];
             gun.SkinName = skinMap.get(gun.SkinID.toUpperCase());
             gun.LevelName = levelMap.get(gun.SkinLevelID.toUpperCase());
-            gun.ChromaName = chromaMap.get(gun.ChromaID.toUpperCase());
+            gun.ChromaName = chromaMap.get(gun.ChromaID.toUpperCase()) || "Standard";
         }
 
         this._equippedGuns = guns;
-        // console.log(this._equippedGuns);
+        this._equippedSprays = loadout.Sprays;
+        this._identity = loadout.Identity;
+        this._incognito = loadout.Incognito;
 
         this._skinToGunMap = new Map();
         this.buildSkinToGunMap(skinMap);
@@ -92,6 +97,14 @@ class LoadoutManager {
 
     get SkinToGunMap() {
         return this._skinToGunMap;
+    }
+
+    get Sprays() {
+        return this._equippedSprays;
+    }
+
+    get Identity() {
+        return this._identity;
     }
 }
 

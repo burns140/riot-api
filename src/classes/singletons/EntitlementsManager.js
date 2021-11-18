@@ -19,7 +19,7 @@ class EntitlementsManager {
     async init() {
         const config = {
             headers: {
-                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-70ff3601-b808-4050-89fa-0ff949a47e4e"
+                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-0b69981a-08f6-4f87-ae43-e96b00ae51fd"
             }
         }
         const allContent = (await AxiosWrapper.get(URLS.ALL_CONTENT, config)).data;

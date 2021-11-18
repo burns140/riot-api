@@ -3,7 +3,7 @@ const URLS = {
     ENTITLEMENTS_TOKEN: "https://entitlements.auth.riotgames.com/api/token/v1",
     USER_INFO: "https://auth.riotgames.com/userinfo",
     FETCH_CONTENT: "https://shared.na.a.pvp.net/content-service/v3/content",
-    GET_LOADOUT: "https://pd.na.a.pvp.net/personalization/v2/players/puuid/playerloadout",
+    LOADOUT: "https://pd.na.a.pvp.net/personalization/v2/players/puuid/playerloadout",
     GET_STORE: "https://pd.na.a.pvp.net/store/v1/entitlements/puuid",
     GET_ENTITLEMENTS: "https://pd.na.a.pvp.net/store/v1/entitlements/puuid",
     ALL_CONTENT: "https://na.api.riotgames.com/val/content/v1/contents"
@@ -109,7 +109,8 @@ const STANDARD_CHROMAS = {
     [GUN_IDS.GHOST]: undefined,
     [GUN_IDS.SHERIFF]: "3C0A4650-4606-0E21-0E73-1AA54F514EC4",
     [GUN_IDS.SHORTY]: undefined,
-    [GUN_IDS.OPERATOR]: ["3116414A-47D5-DA50-B27F-A4BE014A7951", "F3D3F7F3-46F2-A9D7-1C0C-CA89605ED120"], // GENESIS AND 
+    GENESIS_OPERATOR: "3116414A-47D5-DA50-B27F-A4BE014A7951", // GENESIS AND NITRO
+    NITRO_OPERATOR: "F3D3F7F3-46F2-A9D7-1C0C-CA89605ED120", // May need to flip
     [GUN_IDS.GUARDIAN]: "C8721633-461A-A7BE-8777-BD96C9332470",
     [GUN_IDS.MARSHAL]: "F9800505-4923-A557-494B-02BF4C47EC2B",
     [GUN_IDS.SPECTRE]: undefined,
