@@ -1,5 +1,8 @@
 const AuthenticationHandler = require("../static/AuthenticationHandler");
 
+/**
+ * @classdesc Track the users tokens and id
+ */
 class User {
     _accessToken;
     _entitlementsToken;
@@ -7,6 +10,9 @@ class User {
 
     constructor() {}
 
+    /**
+     * @description Initialize the access token, entitlements token, and user id
+     */
     async init() {
         const { accessToken, entitlementsToken, userId } = await AuthenticationHandler.getCredentials();
         this._accessToken = accessToken;
@@ -14,6 +20,9 @@ class User {
         this._userId = userId;
     }
 
+    /**
+     * Getters below
+     */
     get AccessToken() {
         return this._accessToken;
     }
