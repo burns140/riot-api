@@ -1,7 +1,7 @@
 const AuthenticationHandler = require("../static/AuthenticationHandler");
 
 /**
- * @classdesc Track the users tokens and id
+ * @classdesc Track/store the users tokens and id
  */
 class User {
     _accessToken;

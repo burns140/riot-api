@@ -5,8 +5,14 @@ const AUTH = require("../../resources/auth.json");
 const USERNAME = AUTH.USERNAME || "YOUR_USERNAME_HERE";
 const PASSWORD = AUTH.PASSWORD || "YOUR_PASSWORD_HERE";
 
-
+/**
+ * @classdesc Get the tokens and cookies necessary for requests to the client api
+ */
 module.exports = class AuthenticationHandler {
+
+    /**
+     * @description Initialize session to get cookie necessary for later requests
+     */
     static async createSession() {
         const initRequest = {
             "client_id": "play-valorant-web-prod",
@@ -20,6 +26,10 @@ module.exports = class AuthenticationHandler {
         AxiosWrapper.setCookie(cookie);
     }
 
+    /**
+     * @description Send request to Riot auth endpoint to get the access token
+     * @returns {string} access token
+     */
     static async getAccessToken() {
         let data = {
             "type": "auth",
@@ -37,6 +47,10 @@ module.exports = class AuthenticationHandler {
         return accessId;
     }
 
+    /**
+     * @description Send request to Riot auth endpoint to get entitlements token
+     * @returns {string} entitlements token
+     */
     static async getEntitlementsToken() {
         const response = await AxiosWrapper.post(URLS.ENTITLEMENTS_TOKEN, {});
         const entitlementsToken = response.data["entitlements_token"]
@@ -44,6 +58,10 @@ module.exports = class AuthenticationHandler {
         return entitlementsToken;
     }
 
+    /**
+     * @description Send request to Riot user info endpoint to get user id
+     * @returns {string} user id
+     */
     static async getUserId() {
         const response = await AxiosWrapper.post(URLS.USER_INFO, {});
         const userId = response.data.sub;
@@ -51,6 +69,10 @@ module.exports = class AuthenticationHandler {
         return userId;
     }
 
+    /**
+     * @description Get all the credentials necessary to make requests to Riot's client endpoint
+     * @returns {string, string, string}
+     */
     static async getCredentials() {
         await this.createSession();
 
