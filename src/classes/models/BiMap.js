@@ -1,3 +1,6 @@
+/**
+ * @classdesc Emulates a bidirectional map
+ */
 module.exports = class BiMap {
     _map = new Map();
     _reverseMap = new Map();
