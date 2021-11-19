@@ -44,7 +44,7 @@ class EntitlementsManager {
 
     /**
      * @description Get all valorant game content from Riot's api
-     * @returns {object}
+     * @returns {Promise<object>}
      */
     async getAllContent() {
         const config = {

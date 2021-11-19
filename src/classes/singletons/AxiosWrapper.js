@@ -42,7 +42,7 @@ class AxiosWrapper {
      * @param {string} url 
      * @param {any} data 
      * @param {any} config 
-     * @returns {AxiosResponse}
+     * @returns {Promise<AxiosResponse>}
      */
     async post(url, data, config) {
         const response = await this.axiosInstance.post(url, data, config || this.config);
@@ -54,7 +54,7 @@ class AxiosWrapper {
      * @param {string} url 
      * @param {any} data 
      * @param {any} config 
-     * @returns {AxiosResponse}
+     * @returns {Promise<AxiosResponse>}
      */
     async put(url, data, config) {
         const response = await this.axiosInstance.put(url, data, config || this.config);
@@ -65,7 +65,7 @@ class AxiosWrapper {
      * @description Passthrough for axios get function
      * @param {string} url 
      * @param {any} config 
-     * @returns {AxiosResponse}
+     * @returns {Promise<AxiosResponse>}
      */
     async get(url, config) {
         const response = await this.axiosInstance.get(url, config || this.config);

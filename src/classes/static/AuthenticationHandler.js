@@ -38,7 +38,7 @@ module.exports = class AuthenticationHandler {
 
     /**
      * @description Send request to Riot auth endpoint to get the access token
-     * @returns {string} access token
+     * @returns {Promise<string>} access token
      */
     static async getAccessToken() {
         let data = {
@@ -59,7 +59,7 @@ module.exports = class AuthenticationHandler {
 
     /**
      * @description Send request to Riot auth endpoint to get entitlements token
-     * @returns {string} entitlements token
+     * @returns {Promise<string>} entitlements token
      */
     static async getEntitlementsToken() {
         const response = await AxiosWrapper.post(URLS.ENTITLEMENTS_TOKEN, {});
@@ -70,7 +70,7 @@ module.exports = class AuthenticationHandler {
 
     /**
      * @description Send request to Riot user info endpoint to get user id
-     * @returns {string} user id
+     * @returns {Promise<string>} user id
      */
     static async getUserId() {
         const response = await AxiosWrapper.post(URLS.USER_INFO, {});
@@ -81,7 +81,7 @@ module.exports = class AuthenticationHandler {
 
     /**
      * @description Get all the credentials necessary to make requests to Riot's client endpoint
-     * @returns {string, string, string}
+     * @returns {Promise<string, string, string>}
      */
     static async getCredentials() {
         await this.createSession();

@@ -45,7 +45,7 @@ class LoadoutManager {
 
     /**
      * @description Get your current loadout from riot api
-     * @returns {AxiosResponse}
+     * @returns {Promise<AxiosResponse>}
      */
     async getLoadout() {
         return (await AxiosWrapper.get(URLS.LOADOUT.replace("puuid", User.UserId))).data;
