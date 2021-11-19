@@ -4,6 +4,13 @@ const ITEM_TYPE_IDS = require("../../common/Constants").ITEM_TYPE_IDS;
 const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
 const User = require("./User");
 const BiMap = require("../models/BiMap");
+let PROFILES;
+
+try {
+    PROFILES = require("../../resources/profiles.json")
+} catch {
+    PROFILES = undefined;
+}
 
 /**
  * @classdesc Track the users entitlements
@@ -42,7 +49,7 @@ class EntitlementsManager {
     async getAllContent() {
         const config = {
             headers: {
-                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-0b69981a-08f6-4f87-ae43-e96b00ae51fd"
+                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-b5c031d3-ff3d-4541-9d40-2b888050d30a"
             }
         }
 
@@ -69,8 +76,27 @@ class EntitlementsManager {
      */
     createSkinIdMap(mySkinNames, allSkins) {
         const mySkins = allSkins.filter(skin => mySkinNames.includes(skin.name));
+        let skinsToUse = [];
+
+        if (!!PROFILES) {
+            for (const gunName in PROFILES) {
+                let temp = [];
+                if (PROFILES[gunName].length !== 0) {
+                    const base = PROFILES[gunName].map(skinName => `${skinName}${gunName === "Melee" ? "" : ` ${gunName}`}`);
+                    temp = mySkins.filter(x => base.includes(x.name));
+                } else {
+                    temp = mySkins.filter(x => x.name.includes(gunName));
+                }
+
+                skinsToUse = skinsToUse.concat(temp);
+            }
+        } else {
+            skinsToUse = mySkins;
+        }
+        
+
         this._mySkinIdMap = new BiMap();
-        for (const skin of mySkins) {
+        for (const skin of skinsToUse) {
             this._mySkinIdMap.set(skin.id, skin.name);
         }
     }

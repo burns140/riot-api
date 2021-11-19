@@ -1,9 +1,19 @@
 const AxiosWrapper = require("../singletons/AxiosWrapper");
 const URLS = require("../../common/Constants").URLS;
 const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
-const AUTH = require("../../resources/auth.json");
-const USERNAME = AUTH.USERNAME || "YOUR_USERNAME_HERE";
-const PASSWORD = AUTH.PASSWORD || "YOUR_PASSWORD_HERE";
+
+let AUTH;
+let USERNAME;
+let PASSWORD;
+
+try {
+    AUTH = require("../../resources/auth.json");
+    USERNAME = AUTH.USERNAME;
+    PASSWORD = AUTH.PASSWORD;
+} catch {
+    USERNAME = "YOUR_USERNAME_HERE";
+    PASSWORD = "YOUR_PASSWORD_HERE";
+}
 
 /**
  * @classdesc Get the tokens and cookies necessary for requests to the client api
