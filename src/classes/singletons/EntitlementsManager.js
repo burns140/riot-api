@@ -6,12 +6,6 @@ const User = require("./User");
 const BiMap = require("../models/BiMap");
 let PROFILES;
 
-try {
-    PROFILES = require("../../resources/profiles.json")
-} catch {
-    PROFILES = undefined;
-}
-
 /**
  * @classdesc Track the users entitlements
  */
@@ -26,6 +20,8 @@ class EntitlementsManager {
      * @description Initialize mapping for skins, skin levels, and chromas
      */
     async init() {
+        PROFILES = require("../../resources/profiles.json")
+
         const allContent = await this.getAllContent();
         const { allSkins, allSkinLevels, allSkinChromas } = this.breakAllContentIntoCategories(allContent);
         
@@ -49,7 +45,7 @@ class EntitlementsManager {
     async getAllContent() {
         const config = {
             headers: {
-                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-3cee2a38-e138-4e68-9312-224e5b516067"
+                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-fa7f98c7-31ed-4dd8-af71-d6963317d013"
             }
         }
 

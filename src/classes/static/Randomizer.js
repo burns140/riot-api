@@ -3,7 +3,7 @@ const AxiosWrapper = require("../singletons/AxiosWrapper");
 const EntitlementsManager = require("../singletons/EntitlementsManager");
 const LoadoutManager = require("../singletons/LoadoutManager");
 const User = require("../singletons/User");
-const GUNS_TO_RANDOMIZE = require("../../resources/config.json").GUNS_TO_RANDOMIZE;
+let GUNS_TO_RANDOMIZE;
 
 /**
  * @classdesc Do any randomizing of in game items
@@ -13,6 +13,8 @@ module.exports = class Randomizer {
      * @description Randomize skins for every gun
      */
     static randomizeAllSkins() {
+        GUNS_TO_RANDOMIZE = require("../../resources/config.json").GUNS_TO_RANDOMIZE;
+
         const skinToGunMap = LoadoutManager.SkinToGunMap;
         const randomizedGunNameToSkinName = new Map();
 
@@ -164,7 +166,5 @@ module.exports = class Randomizer {
                 gunForReq.CharmLevelID = gun.CharmLevelID;
             }
         }
-
-        console.log(guns);
     }
 }

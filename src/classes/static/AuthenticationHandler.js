@@ -6,15 +6,6 @@ let AUTH;
 let USERNAME;
 let PASSWORD;
 
-try {
-    AUTH = require("../../resources/auth.json");
-    USERNAME = AUTH.USERNAME;
-    PASSWORD = AUTH.PASSWORD;
-} catch {
-    USERNAME = "YOUR_USERNAME_HERE";
-    PASSWORD = "YOUR_PASSWORD_HERE";
-}
-
 /**
  * @classdesc Get the tokens and cookies necessary for requests to the client api
  */
@@ -24,6 +15,10 @@ module.exports = class AuthenticationHandler {
      * @description Initialize session to get cookie necessary for later requests
      */
     static async createSession() {
+        AUTH = require("../../resources/auth.json");
+        USERNAME = AUTH.USERNAME || "YOUR_USERNAME_HERE";
+        PASSWORD = AUTH.PASSWORD || "YOUR_PASSWORD_HERE";
+
         const initRequest = {
             "client_id": "play-valorant-web-prod",
             "nonce": "1",
