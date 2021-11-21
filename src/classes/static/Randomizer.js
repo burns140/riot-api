@@ -3,6 +3,7 @@ const AxiosWrapper = require("../singletons/AxiosWrapper");
 const EntitlementsManager = require("../singletons/EntitlementsManager");
 const LoadoutManager = require("../singletons/LoadoutManager");
 const User = require("../singletons/User");
+const GUNS_TO_RANDOMIZE = require("../../resources/config.json").GUNS_TO_RANDOMIZE;
 
 /**
  * @classdesc Do any randomizing of in game items
@@ -133,14 +134,25 @@ module.exports = class Randomizer {
      */
     static buildGunArray(guns, randomizedMap) {
         randomizedMap.forEach((skinInfo, gunId) => {
-            const thisGun = {
-                ID: gunId,
-                SkinID: skinInfo.skinId,
-                SkinLevelID: skinInfo.levelId,
-                ChromaID: skinInfo.chromaId,
-                Attachments: []
-            };
-
+            let thisGun;
+            if (GUNS_TO_RANDOMIZE.includes(skinInfo.gunName) || GUNS_TO_RANDOMIZE.length === 0) {
+                thisGun = {
+                    ID: gunId,
+                    SkinID: skinInfo.skinId,
+                    SkinLevelID: skinInfo.levelId,
+                    ChromaID: skinInfo.chromaId,
+                    Attachments: []
+                };
+            } else {
+                const gunToUse = LoadoutManager.EquippedGuns.find(x => x.Name === skinInfo.gunName);
+                thisGun = {
+                    ID: gunToUse.ID,
+                    SkinID: gunToUse.SkinID,
+                    SkinLevelID: gunToUse.SkinLevelID,
+                    ChromaID: gunToUse.ChromaID,
+                    Attachments: []
+                }
+            }
             guns.push(thisGun);
         });
 
@@ -152,5 +164,7 @@ module.exports = class Randomizer {
                 gunForReq.CharmLevelID = gun.CharmLevelID;
             }
         }
+
+        console.log(guns);
     }
 }

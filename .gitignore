@@ -1,5 +1,6 @@
 src/resources/auth.json
 src/resources/profiles.json
+src/resources/config.json
 
 # Logs
 logs

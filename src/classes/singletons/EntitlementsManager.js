@@ -49,7 +49,7 @@ class EntitlementsManager {
     async getAllContent() {
         const config = {
             headers: {
-                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-b5c031d3-ff3d-4541-9d40-2b888050d30a"
+                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-3cee2a38-e138-4e68-9312-224e5b516067"
             }
         }
 
