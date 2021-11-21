@@ -118,6 +118,12 @@ const STANDARD_CHROMAS = {
     [GUN_IDS.MELEE]: "6226D393-49D1-4A15-CB52-C8BCE5FC135A"
 }
 
+const FILE_NAMES = {
+    AUTH: "/resources/auth.json",
+    CONFIG: "/resources/config.json",
+    PROFILES: "/resources/profiles.json",
+}
+
 module.exports.URLS = URLS;
 module.exports.CLIENT_VALUES = CLIENT_VALUES;
 module.exports.HEADER_FIELDS = HEADER_FIELDS;
@@ -126,3 +132,4 @@ module.exports.GUN_IDS = GUN_IDS;
 module.exports.GUN_NAMES = GUN_NAMES;
 module.exports.GUN_ID_TO_NAME_MAP = GUN_ID_TO_NAME_MAP;
 module.exports.STANDARD_CHROMAS = STANDARD_CHROMAS;
+module.exports.FILE_NAMES = FILE_NAMES;

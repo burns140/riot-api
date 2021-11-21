@@ -1,0 +1,29 @@
+{
+    "AUTH": {
+        "USERNAME": "",
+        "PASSWORD": ""
+    },
+    "PROFILES": {
+        "Classic": [],
+        "Ares": [],
+        "Odin": [],
+        "Vandal": [],
+        "Bulldog": [],
+        "Phantom": [],
+        "Judge": [],
+        "Bucky": [],
+        "Frenzy": [],
+        "Ghost": [],
+        "Sheriff": [],
+        "Shorty": [],
+        "Operator": [],
+        "Guardian": [],
+        "Marshal": [],
+        "Spectre": [],
+        "Stinger": [],
+        "Melee": []
+    },
+    "CONFIG": {
+        "GUNS_TO_RANDOMIZE": []
+    }
+}

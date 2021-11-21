@@ -5,7 +5,7 @@ Script that will randomize the skins that you have equipped on your guns in valo
 To run the script, you navigate to the src folder in any terminal and type 'node main.js' and it should run. You must first assign your username and password for the account authentication, which can be done by going into src/classes/singletons/AuthenticationHandler.js and replacing "YOUR_USERNAME_HERE" and "YOUR_PASSWORD_HERE" with the relevant information.
 
 ## Randomizing from subsets of skins
-To randomize from a subset of skins, go into src/resources/profiles.json (create this file if it doesn't exist) and create profiles for each gun containing the skin names. You can find the skin names in game. Note that you shouldn't put the gun name as well, only the skin. You will have to put the full weapon name for melee weapons, however.
+To randomize from a subset of skins, go into src/resources/profiles.json (create this file if it doesn't exist) and create profiles for each gun containing the skin names. You can find the skin names in game. Note that you shouldn't put the gun name as well, only the skin. You will have to put the full weapon name for melee weapons, however. Empty arrays mean to randomize from all skins.
 ```json
 {
     "Classic": ["Radiant Crisis 001", "Spectrum"],
@@ -50,7 +50,7 @@ To randomize only certain weapons, go into src/resources/config.json (create thi
 17. "Stinger"
 18. "Melee"
 
-An example is below
+An empty array signifies that you want to randomize all guns. An example is below
 
 ```json
 {
