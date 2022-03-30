@@ -4,6 +4,7 @@ const ITEM_TYPE_IDS = require("../../common/Constants").ITEM_TYPE_IDS;
 const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
 const User = require("./User");
 const BiMap = require("../models/BiMap");
+const { default: axios } = require("axios");
 let PROFILES;
 
 /**
@@ -24,7 +25,7 @@ class EntitlementsManager {
 
         const allContent = await this.getAllContent();
         const { allSkins, allSkinLevels, allSkinChromas } = this.breakAllContentIntoCategories(allContent);
-        
+
         const allEntitlements = (await AxiosWrapper.get(URLS.GET_ENTITLEMENTS.replace("puuid", User.UserId))).data.EntitlementsByTypes;
         const mySkinIds = allEntitlements.filter(x => x.ItemTypeID === ITEM_TYPE_IDS.SKINS)[0].Entitlements.map(skin => skin.ItemID);
         const myChromaIds = allEntitlements.filter(x => x.ItemTypeID === ITEM_TYPE_IDS.SKIN_VARIANTS)[0].Entitlements.map(variant => variant.ItemID);
@@ -45,11 +46,11 @@ class EntitlementsManager {
     async getAllContent() {
         const config = {
             headers: {
-                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-fa7f98c7-31ed-4dd8-af71-d6963317d013"
+                [HEADER_FIELDS.RIOT_TOKEN]: "RGAPI-fd0922d0-e8cc-44cb-8ee3-426c90c249f5"
             }
         }
 
-        return (await AxiosWrapper.get(URLS.ALL_CONTENT, config)).data;
+        return (await axios.get(URLS.ALL_CONTENT, config)).data;
     }
 
     /**
@@ -71,14 +72,14 @@ class EntitlementsManager {
      * @param {object} allSkins All skins in the game
      */
     createSkinIdMap(mySkinNames, allSkins) {
-        const mySkins = allSkins.filter(skin => mySkinNames.includes(skin.name));
-        let skinsToUse = [];
+            const mySkins = allSkins.filter(skin => mySkinNames.includes(skin.name));
+            let skinsToUse = [];
 
-        if (!!PROFILES) {
-            for (const gunName in PROFILES) {
-                let temp = [];
-                if (PROFILES[gunName].length !== 0) {
-                    const base = PROFILES[gunName].map(skinName => `${skinName}${gunName === "Melee" ? "" : ` ${gunName}`}`);
+            if (!!PROFILES) {
+                for (const gunName in PROFILES) {
+                    let temp = [];
+                    if (PROFILES[gunName].length !== 0) {
+                        const base = PROFILES[gunName].map(skinName => `${skinName}${gunName === "Melee" ? "" : ` ${gunName}`}`);
                     temp = mySkins.filter(x => base.includes(x.name));
                 } else {
                     temp = mySkins.filter(x => x.name.includes(gunName));

@@ -1,6 +1,14 @@
 const axios = require("axios");
 const CLIENT_VALUES = require("../../common/Constants").CLIENT_VALUES;
 const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
+const { Agent } = require("https");
+
+const ciphers = [
+    'TLS_CHACHA20_POLY1305_SHA256',
+    'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256',
+    'TLS_AES_128_GCM_SHA256',
+    'TLS_AES_256_GCM_SHA384',
+];
 
 /**
  * @classdesc Act as a wrapper for axios instance to store cookies
@@ -15,7 +23,8 @@ class AxiosWrapper {
      * @description Create the instance with any persistent settings
      */
     constructor() {
-        this.axiosInstance = axios.create({ withCredentials: true });
+        const agent = new Agent({ ciphers: ciphers.join(':'), honorCipherOrder: true, minVersion: 'TLSv1.2' })
+        this.axiosInstance = axios.create({ withCredentials: true, httpsAgent: agent });
         this.setHeaderField(HEADER_FIELDS.CLIENT_VERSION, CLIENT_VALUES.CLIENT_VERSION);
         this.setHeaderField(HEADER_FIELDS.CLIENT_PLATFORM, CLIENT_VALUES.CLIENT_PLATFORM);
     }
@@ -45,7 +54,12 @@ class AxiosWrapper {
      * @returns {Promise<AxiosResponse>}
      */
     async post(url, data, config) {
-        const response = await this.axiosInstance.post(url, data, config || this.config);
+        let response = "";
+        try {
+            response = await this.axiosInstance.post(url, data, config || this.config);
+        } catch (e) {
+            console.log(e);
+        }
         return response;
     }
 

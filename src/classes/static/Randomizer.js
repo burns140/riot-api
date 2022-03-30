@@ -22,7 +22,7 @@ module.exports = class Randomizer {
          * Randomly selects the skin for each gun type
          */
         skinToGunMap.forEach((levelVariantPair, gunType) => {
-            const skinNames = [ ...levelVariantPair.keys() ];
+            const skinNames = [...levelVariantPair.keys()];
             const randomIndex = Math.floor(Math.random() * skinNames.length);
             const randomSkinName = skinNames[randomIndex];
 
@@ -124,6 +124,8 @@ module.exports = class Randomizer {
             Sprays: LoadoutManager.Sprays,
             Identity: LoadoutManager.Identity
         };
+
+        console.log(guns);
 
         const res = (await AxiosWrapper.put(URLS.LOADOUT.replace("puuid", User.UserId), data));
         console.log(res);

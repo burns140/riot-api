@@ -6,11 +6,11 @@ const URLS = {
     LOADOUT: "https://pd.na.a.pvp.net/personalization/v2/players/puuid/playerloadout",
     GET_STORE: "https://pd.na.a.pvp.net/store/v1/entitlements/puuid",
     GET_ENTITLEMENTS: "https://pd.na.a.pvp.net/store/v1/entitlements/puuid",
-    ALL_CONTENT: "https://na.api.riotgames.com/val/content/v1/contents"
+    ALL_CONTENT: "https://na.api.riotgames.com/val/content/v1/contents?locale=en-US"
 };
 
 const CLIENT_VALUES = {
-    CLIENT_VERSION: "release-03.09-shipping-13-629826",
+    CLIENT_VERSION: "release-04.04-shipping-16-679250",
     CLIENT_PLATFORM: "ew0KCSJwbGF0Zm9ybVR5cGUiOiAiUEMiLA0KCSJwbGF0Zm9ybU9TIjogIldpbmRvd3MiLA0KCSJwbGF0Zm9ybU9TVmVyc2lvbiI6ICIxMC4wLjE5MDQyLjEuMjU2LjY0Yml0IiwNCgkicGxhdGZvcm1DaGlwc2V0IjogIlVua25vd24iDQp9"
 }
 
