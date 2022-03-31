@@ -28,7 +28,9 @@ module.exports = class AuthenticationHandler {
         };
 
         const response = await AxiosWrapper.post(URLS.AUTH, initRequest);
+        console.log(response);
         const cookie = response.headers["set-cookie"];
+        console.log(cookie);
         AxiosWrapper.setCookie(cookie);
     }
 
@@ -83,9 +85,11 @@ module.exports = class AuthenticationHandler {
         await this.createSession();
 
         const accessToken = await this.getAccessToken();
+        console.log(accessToken);
         AxiosWrapper.setHeaderField(HEADER_FIELDS.AUTH, `Bearer ${accessToken}`);
 
         const entitlementsToken = await this.getEntitlementsToken(accessToken);
+        console.log(entitlementsToken);
         AxiosWrapper.setHeaderField(HEADER_FIELDS.ENTITLEMENTS, entitlementsToken);
 
         const userId = await this.getUserId();

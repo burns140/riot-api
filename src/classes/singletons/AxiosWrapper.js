@@ -43,6 +43,9 @@ class AxiosWrapper {
      * @param {} cookie 
      */
     setCookie(cookie) {
+        console.log("setting cookie");
+        console.log(cookie);
+        document.cookie = cookie;
         this.axiosInstance.defaults.headers.Cookie = cookie;
     }
 

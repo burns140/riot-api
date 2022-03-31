@@ -1,24 +1,25 @@
 {
-  "name": "riot-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/burns140/riot-api.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/burns140/riot-api/issues"
-  },
-  "homepage": "https://github.com/burns140/riot-api#readme",
-  "dependencies": {
-    "axios": "^0.24.0",
-    "electron": "^18.0.0"
-  }
+    "name": "riot-api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "electron ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/burns140/riot-api.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/burns140/riot-api/issues"
+    },
+    "homepage": "https://github.com/burns140/riot-api#readme",
+    "dependencies": {
+        "axios": "^0.24.0",
+        "electron": "^18.0.0"
+    }
 }
