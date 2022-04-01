@@ -1,6 +1,8 @@
+const { default: axios } = require("axios");
 const AxiosWrapper = require("../singletons/AxiosWrapper");
 const URLS = require("../../common/Constants").URLS;
 const HEADER_FIELDS = require("../../common/Constants").HEADER_FIELDS;
+const CLIENT_VALUES = require("../../common/Constants").CLIENT_VALUES;
 
 let AUTH;
 let USERNAME;
@@ -27,10 +29,8 @@ module.exports = class AuthenticationHandler {
             "scope": "account openid"
         };
 
-        const response = await AxiosWrapper.post(URLS.AUTH, initRequest);
-        console.log(response);
+        const response = await AxiosWrapper.post(URLS.AUTH, initRequest, { withCredentials: true });
         const cookie = response.headers["set-cookie"];
-        console.log(cookie);
         AxiosWrapper.setCookie(cookie);
     }
 
@@ -85,11 +85,9 @@ module.exports = class AuthenticationHandler {
         await this.createSession();
 
         const accessToken = await this.getAccessToken();
-        console.log(accessToken);
         AxiosWrapper.setHeaderField(HEADER_FIELDS.AUTH, `Bearer ${accessToken}`);
 
         const entitlementsToken = await this.getEntitlementsToken(accessToken);
-        console.log(entitlementsToken);
         AxiosWrapper.setHeaderField(HEADER_FIELDS.ENTITLEMENTS, entitlementsToken);
 
         const userId = await this.getUserId();

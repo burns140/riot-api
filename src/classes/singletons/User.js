@@ -18,8 +18,6 @@ class User {
         this._accessToken = accessToken;
         this._entitlementsToken = entitlementsToken;
         this._userId = userId;
-
-        console.log(this._userId);
     }
 
     /**

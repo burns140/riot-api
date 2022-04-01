@@ -1,9 +1,18 @@
-const User = require("./classes/singletons/User");
+const { GUN_NAMES } = require("./common/Constants");
 
-async function start() {
-    console.log("in the thing");
+const ipcRenderer = require("electron").ipcRenderer;
 
-    await User.init();
-}
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+const submit = document.getElementById("submit");
 
-start();
+submit.addEventListener("click", e => {
+    ipcRenderer.send("getCookies", {
+        username: username.value,
+        password: password.value
+    });
+});
+
+ipcRenderer.on("finEntitle", (e, message) => {
+
+})

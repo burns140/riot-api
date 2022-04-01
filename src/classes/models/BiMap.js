@@ -51,6 +51,10 @@ module.exports = class BiMap {
         return this._map.keys();
     }
 
+    values() {
+        return this._reverseMap.keys();
+    }
+
     /**
      * Getters are below
      */

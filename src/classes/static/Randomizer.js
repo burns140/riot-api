@@ -125,10 +125,9 @@ module.exports = class Randomizer {
             Identity: LoadoutManager.Identity
         };
 
-        console.log(guns);
 
         const res = (await AxiosWrapper.put(URLS.LOADOUT.replace("puuid", User.UserId), data));
-        console.log(res);
+        // console.log(res);
     }
 
     /**
